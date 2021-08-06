@@ -73,6 +73,7 @@ def verfy(request):
         i=User.objects.get(username=username).id
         new_info=User.objects.get(i)
         new_info.Extrainfo.grade_level=user_grade_level
+        print('hello')
         return redirect('/')
     else:
         return render(request,'create_user.html')
