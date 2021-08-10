@@ -17,7 +17,7 @@ def random_word(grade):
     con_grade_level=str(grade)
     for word in words:
         for letter in word:
-            if con_grade_level in letter:
+            if grade in letter:
                  word_list.append(word.replace(f',{con_grade_level}',''))
     word=random.choice(word_list).strip()
     return word
@@ -45,13 +45,14 @@ def correct(request):
 
 
 def home(request):
+    print(User.first_name)
     return render(request, 'home.html',{'User':request.user})
 
 
 
 @login_required(login_url='/login/')
 def quiz(request):
-    return render(request,'quiz.html', {'word': random_word(3)})
+    return render(request,'quiz.html', {'word': random_word(str(5))})
 
 
 
@@ -63,17 +64,14 @@ def verfy(request):
         username=request.POST['usrname']
         password_1=request.POST['psw']
         password_2=request.POST['psw2']
-        user_grade_level=request.POST['dog-names']
+        user_grade_level=request.POST['grade_level']
         if password_1!=password_2:
             return render(request,'create_user.html',{'error':True,'msg':'Passwords do not match'})
         if User.objects.filter(username=username).exists():
             return render(request, 'create_user.html', {'error': True, 'msg': 'Username taken'})
         user=User.objects.create_user(username=username,password=password_1,first_name=first_name,last_name=last_name)
+        print(user)
         user.save()
-        i=User.objects.get(username=username).id
-        new_info=User.objects.get(i)
-        new_info.Extrainfo.grade_level=user_grade_level
-        print('hello')
         return redirect('/')
     else:
         return render(request,'create_user.html')

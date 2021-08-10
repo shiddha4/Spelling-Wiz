@@ -9,11 +9,12 @@ class CorrectionWord(models.Model):
 
 
 class NewWord(models.Model):
-    word = models.CharField(max_length=100)
     user = models.OneToOneField(User,on_delete=models.CASCADE)
+    word = models.CharField(max_length=100)
+
 
 
 
 class Extrainfo(models.Model):
-    grade_level=models.IntegerField()
+    grade_level=models.CharField(max_length=2)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
