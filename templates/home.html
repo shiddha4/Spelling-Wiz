@@ -20,12 +20,14 @@ h1, h2, h3, h4, h5, h6 {
     <!-- Right-sided navbar links. Hide them on small screens -->
     <div class="w3-right w3-hide-small">
       {% if User.is_authenticated  %}
-        <li>hello {{User.first_name}}<li>
+                        <li>Hello {{User.first_name}}<li>
+
           <a href="#about" class="w3-bar-item w3-button">About</a>
           <a href="#advantages" class="w3-bar-item w3-button">Advantages</a>
            <a href="/logout/" class="w3-bar-item w3-button">logout</a>
+
            <a href="/quiz/" class="w3-bar-item w3-button">Learn</a>
-          <a href="/account/create/" class="w3-bar-item w3-button">Study</a>
+        <a href="/settings/" class="w3-bar-item w3-button">Settings</a>
      {% else %}
       <a href="/create/" class="w3-bar-item w3-button">Sign Up</a>
          <a href="/login/" class="w3-bar-item w3-button">Login</a>
