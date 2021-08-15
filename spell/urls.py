@@ -8,6 +8,7 @@ urlpatterns=[
     path('create/', views.verfy, name='verfy'),
     path('login/',views.login,name='login'),
     path('logout/',views.logout,name='logout'),
-    path('settings/',views.settings,name='settings')
+    path('settings/',views.settings,name='settings'),
+    path('update_grade/',views.grade,name="grade")
 
 ]

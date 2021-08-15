@@ -10,7 +10,6 @@ from django.contrib.auth.models import User,auth
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 
-
 def random_word(grade):
     if int(grade)<10:
         word_list = []
@@ -147,14 +146,20 @@ def logout(request):
 
 @login_required(login_url='/login/')
 def settings(request):
-    grade=''
-    if User.last_name=='1':
-        grade="st grade"
-    elif User.last_name=='2':
-        grade="nd grade"
-    elif User.last_name == '3':
-        grade = "rd grade"
-    elif  User.last_name=='4' or '5' or '6' or '7' or '8' or '9':
-        grade='th grade'
-    return render(request,'settings.html',{"User_grade":grade,
-                                           'User':request.user})
+    return render(request,'settings.html',{'User':request.user})
+
+
+
+
+
+@login_required(login_url='/login/')
+def grade(request):
+    if request.method=='POST':
+        grade=request.POST['grade_level']
+        a=Extrainfo.objects.get(user=request.user.id)
+        a.grade_level=grade
+        a.grade_level=grade
+        a.save()
+        return redirect('/settings/')
+    else:
+        return redirect('/settings/')

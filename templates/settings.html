@@ -10,7 +10,8 @@
           <a href="/#advantages" class="w3-bar-item w3-button">Advantages</a>
         <a href="/quiz/" class="w3-bar-item w3-button">Learn</a>
         <a href="/logout/" class="w3-bar-item w3-button">logout</a>
-        <a href="/account/create/" class="w3-bar-item w3-button">Study</a>
+                <a href="/settings/" class="w3-bar-item w3-button">Settings</a>
+
     </div>
   </div>
 </div>
@@ -19,4 +20,21 @@
     </div>
     <div class="w3-col m6 w3-padding-large">
       <h5 class="w3-center">
-        <h5>Your current grade level: {{User.extrainfo.grade_level}}{{User_grade}}</h5>
+        <h5>Your current  level: Grade {{User.extrainfo.grade_level}}</h5>
+     <form action="/update_grade/" method="POST">
+         {%csrf_token%}
+          <label for="grade_level">Update your grade</label>
+        <select name="grade_level" id="grade_level">
+    <option value="1">1st grade</option>
+    <option value="2">2nd grade</option>
+    <option value="3">3rd grade</option>
+    <option value="4">4th grade</option>
+  <option value="5">5th grade</option>
+  <option value="6">6th grade</option>
+  <option value="7">7th grade</option>
+   <option value="8">8th grade</option>
+    <option value="9">9th grade</option>
+
+</select>
+  <input type="submit" value="Submit">
+</form>
