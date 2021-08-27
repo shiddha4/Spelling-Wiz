@@ -1,5 +1,8 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 <div class="w3-top">
   <div class="w3-bar w3-green w3-padding w3-card" style="letter-spacing:4px;">
@@ -9,21 +12,31 @@
          <a href="/#about" class="w3-bar-item w3-button">About</a>
           <a href="/#advantages" class="w3-bar-item w3-button">Advantages</a>
         <a href="/quiz/" class="w3-bar-item w3-button">Learn</a>
+                        <a href="/settings/" class="w3-bar-item w3-button">Settings</a>
+
         <a href="/logout/" class="w3-bar-item w3-button">logout</a>
-                <a href="/settings/" class="w3-bar-item w3-button">Settings</a>
 
     </div>
   </div>
 </div>
     <div class="w3-row w3-padding-64" id="about">
     <div class="w3-center">
+        {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-success alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Success!</strong> Grade Level Updated!
+              </div>
+            {%endfor%}
+
+        {%endif%}
     </div>
     <div class="w3-col m6 w3-padding-large">
       <h5 class="w3-center">
-        <h5>Your current  level: Grade {{User.extrainfo.grade_level}}</h5>
+        <h5>Your Current  Level: Grade {{User.extrainfo.grade_level}}</h5>
      <form action="/update_grade/" method="POST">
          {%csrf_token%}
-          <label for="grade_level">Update your grade</label>
+          <label for="grade_level">Update Your Grade</label>
         <select name="grade_level" id="grade_level">
     <option value="1">1st grade</option>
     <option value="2">2nd grade</option>
@@ -36,5 +49,5 @@
     <option value="9">9th grade</option>
 
 </select>
-  <input type="submit" value="Submit">
+  <button class="w3-btn w3-ripple w3-blue">Submit</button>
 </form>

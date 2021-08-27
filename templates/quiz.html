@@ -48,10 +48,13 @@ h1, h2, h3, h4, h5, h6 {
          <button class="w3-btn w3-ripple w3-blue">Submit</button>
 
       </form>
+  <source src="Correct-answer.mp3" type="audio/mpeg">
+  <source src="Correct-answer.mp3" type="audio/mpeg">
 
 
-      <div id="output">
+      <div id="output" style="color:green">
       </div>
+
       <script>
 
 
@@ -71,11 +74,19 @@ h1, h2, h3, h4, h5, h6 {
                 },
 
                 success: function(data){
-                   $('#output').html(data.msg)
+                if (data.correct) {
+                    document.getElementById("output").style.color = "green";
+                    $('#output').html(data.msg);
+                     document.getElementById("myBtn").disabled = false;
+                     document.getElementById("view_answer").disabled = false;
+                }
+                if (data.not_correct)  {
+                document.getElementById("output").style.color = "red";
+                    $('#output').html(data.msg);
+                    document.getElementById("view_answer").disabled = false;
 
-                        document.getElementById("myBtn").disabled = false;
-                       document.getElementById("view_answer").disabled = false;
 
+                }
 
 
 

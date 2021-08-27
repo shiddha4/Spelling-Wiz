@@ -4,11 +4,12 @@ import random
 from django.http import JsonResponse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Extrainfo
+from .models import Extrainfo,CorrectionWord,NewWord
 import random
 from django.contrib.auth.models import User,auth
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 def random_word(grade):
     if int(grade)<10:
@@ -70,7 +71,7 @@ def correct(request):
             return JsonResponse(data)
         else:
             data = {'msg': 'This incorrect',
-                    'correct':False}
+                    'not_correct':True}
             return JsonResponse(data)
     else:
         return redirect('/')
@@ -158,8 +159,8 @@ def grade(request):
         grade=request.POST['grade_level']
         a=Extrainfo.objects.get(user=request.user.id)
         a.grade_level=grade
-        a.grade_level=grade
         a.save()
+        messages.success(request, 'Profile details updated.')
         return redirect('/settings/')
     else:
         return redirect('/settings/')
