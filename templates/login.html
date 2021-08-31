@@ -68,12 +68,16 @@ span.psw {
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-{%if error_message%}
-  <div class="alert alert-danger alert-dismissible fade in">
+   <div class="w3-center">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger alert-dismissible">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong></strong> Invalid login
+    <strong>Error!</strong> {{message}}
   </div>
-{%endif%}
+            {%endfor%}
+
+        {%endif%}
 <!DOCTYPE html>
 <html>
 

@@ -70,12 +70,17 @@ input[type=submit] {
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
-{%if error%}
- <div class="alert alert-danger">
-    <strong></strong> {{msg}}
-
+   <div class="w3-center">
+        {% if messages %}
+            {% for message in messages %}
+               <div class="alert alert-danger alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Error!</strong> {{message}}
   </div>
- {%endif%}
+              </div>
+            {%endfor%}
+
+        {%endif%}
 <p>Please fill out this form</p>
 
 <div class="container">
@@ -87,8 +92,8 @@ input[type=submit] {
     <input type="text" id="Last Name" name="Last Name" required>
 <label for="Email">Email</label>
     <input type="text" id="Email" name="Email" required>
-    <label for="usrname">Username</label>
-    <input type="text" id="usrname" name="usrname" required>
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" required>
 
     <label for="psw">Password</label>
     <input type="password" id="psw" name="psw" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>

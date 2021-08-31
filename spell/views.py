@@ -1,25 +1,26 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 import random
 # Create your views here.
 from django.http import JsonResponse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Extrainfo,CorrectionWord,NewWord
+from .models import Extrainfo, CorrectionWord, NewWord
 import random
-from django.contrib.auth.models import User,auth
+from django.contrib.auth.models import User, auth
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
+
 def random_word(grade):
-    if int(grade)<10:
+    if int(grade) < 10:
         word_list = []
         words = open('words/words.txt', 'r')
-        con_grade_level=str(grade)
+        con_grade_level = str(grade)
         for word in words:
             for letter in word:
                 if grade in letter:
-                     word_list.append(word.replace(f',{con_grade_level}',''))
+                    word_list.append(word.replace(f',{con_grade_level}', ''))
         word=random.choice(word_list).strip()
         return word
     else:
@@ -58,38 +59,24 @@ def random_word(grade):
         #
 
 
-
-
-
 def correct(request):
     if request.is_ajax:
         word = request.POST.get('user_word').lower().strip()
-        correct_word=request.POST.get('word').lower().strip()
-        if word==correct_word:
+        correct_word = request.POST.get('word').lower().strip()
+        if word == correct_word:
             data = {'msg': 'This is correct',
-                    "correct":True}
+                    "correct": True}
             return JsonResponse(data)
         else:
             data = {'msg': 'This incorrect',
-                    'not_correct':True}
+                    'not_correct': True}
             return JsonResponse(data)
     else:
         return redirect('/')
 
 
-
-
-
-
-
-
-
 def home(request):
-    return render(request, 'home.html',{'User':request.user})
-
-
-
-
+    return render(request, 'home.html', {'User': request.user})
 
 
 @login_required(login_url='/login/')
@@ -97,46 +84,45 @@ def quiz(request):
     return render(request,'quiz.html', {'word': random_word(str(request.user.extrainfo.grade_level))})
 
 
-
-
-def verfy(request):
+def verify(request):
     if request.method == 'POST':
-        first_name=request.POST['First Name']
-        last_name=request.POST['Last Name']
-        username=request.POST['usrname']
-        password_1=request.POST['psw']
-        password_2=request.POST['psw2']
-        email=request.POST['Email']
-        user_grade_level=request.POST['grade_level']
-        if password_1!=password_2:
-            return render(request,'create_user.html',{'error':True,'msg':'Passwords do not match'})
+        first_name = request.POST['First Name']
+        last_name = request.POST['Last Name']
+        username = request.POST['username']
+        password_1 = request.POST['psw']
+        password_2 = request.POST['psw2']
+        email = request.POST['Email']
+        user_grade_level = request.POST['grade_level']
+        if password_1 != password_2:
+            messages.error(request,'Passwords do not match')
+            return redirect('/create/')
         if User.objects.filter(username=username).exists():
-            return render(request, 'create_user.html', {'error': True, 'msg': 'Username taken'})
-        user=User.objects.create_user(username=username,password=password_1,first_name=first_name,last_name=last_name,email=email)
+            messages.error(request,'Username already exists')
+            return redirect('/create/')
+        user = User.objects.create_user(username=username, password=password_1, first_name=first_name, last_name=last_name, email=email)
         user.save()
-        userszs = authenticate(username=username, password=password_1)
-        auth.login(request,userszs)
-        extrainfo=Extrainfo(grade_level=user_grade_level,user=request.user)
-        extrainfo.save()
+        authentication = authenticate(username=username, password=password_1)
+        auth.login(request, authentication)
+        extra_info_about_user = Extrainfo(grade_level=user_grade_level,user=request.user)
+        extra_info_about_user.save()
         return redirect('/')
     else:
-        return render(request,'create_user.html')
-
+        return render(request, 'create_user.html')
 
 
 def login(request):
-    if request.method=='POST':
-        username=request.POST['username']
-        password=request.POST['password']
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
         user = authenticate(username=username, password=password)
         if user is not None:
-            auth.login(request,user)
+            auth.login(request, user)
             return redirect('/')
         else:
-            return render(request,'login.html',{'error_message':True,'username':username,'password':password})
-
+           messages.error(request, 'Invalid credentials')
+           return redirect('/login/')
     else:
-        return render(request,'login.html')
+        return render(request, 'login.html')
 
 
 def logout(request):
@@ -144,22 +130,18 @@ def logout(request):
     return redirect('/')
 
 
-
 @login_required(login_url='/login/')
 def settings(request):
-    return render(request,'settings.html',{'User':request.user})
-
-
-
+    return render(request, 'settings.html', {'User': request.user})
 
 
 @login_required(login_url='/login/')
 def grade(request):
-    if request.method=='POST':
-        grade=request.POST['grade_level']
-        a=Extrainfo.objects.get(user=request.user.id)
-        a.grade_level=grade
-        a.save()
+    if request.method == 'POST':
+        grade = request.POST['grade_level']
+        user_info = Extrainfo.objects.get(user=request.user.id)
+        user_info.grade_level = grade
+        user_info.save()
         messages.success(request, 'Profile details updated.')
         return redirect('/settings/')
     else:
