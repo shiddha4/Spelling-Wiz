@@ -5,14 +5,9 @@ from django.contrib.auth.models import User
 
 class CorrectionWord(models.Model):
     incorrect_word = models.CharField(max_length=100)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-
-
-class NewWord(models.Model):
-    user = models.OneToOneField(User,on_delete=models.CASCADE)
-    word = models.CharField(max_length=100)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class Extrainfo(models.Model):
-    grade_level=models.CharField(max_length=2)
+    grade_level = models.CharField(max_length=2)
     user = models.OneToOneField(User, on_delete=models.CASCADE)

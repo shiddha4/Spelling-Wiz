@@ -4,7 +4,7 @@ import random
 from django.http import JsonResponse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Extrainfo, CorrectionWord, NewWord
+from .models import Extrainfo, CorrectionWord
 import random
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import authenticate
@@ -23,44 +23,10 @@ def random_word(grade):
                     word_list.append(word.replace(f',{con_grade_level}', ''))
         word=random.choice(word_list).strip()
         return word
-    else:
-        pass
-        # if grade == 12:
-        #     word_list = []
-        #     words = open('words/12.txt', 'r')
-        #     con_grade_level = str(grade)
-        #     for word in words:
-        #         for letter in word:
-        #             if grade in letter:
-        #                 word_list.append(word.replace(f',{con_grade_level}', ''))
-        #     word = random.choice(word_list).strip()
-        #     return word
-        # elif grade == 11:
-        #     words = open('words/12.txt', 'r')
-        #     con_grade_level = str(grade)
-        #     for word in words:
-        #         for letter in word:
-        #             if grade in letter:
-        #                 word_list.append(word.replace(f',{con_grade_level}', ''))
-        #     word = random.choice(word_list).strip()
-        #     return word
-        # elif grade == '10':
-        #     words = open('words/10.txt', 'r')
-        #     con_grade_level = str(grade)
-        #     for word in words:
-        #         for letter in word:
-        #             if grade in letter:
-        #                 word_list.append(word.replace(f',{con_grade_level}', ''))
-        #     word = random.choice(word_list).strip()
-        #     return word
-        #
-        # else:
-        #     pass
-        #
 
 
 def correct(request):
-    if request.is_ajax:
+    try:
         word = request.POST.get('user_word').lower().strip()
         correct_word = request.POST.get('word').lower().strip()
         if word == correct_word:
@@ -68,11 +34,17 @@ def correct(request):
                     "correct": True}
             return JsonResponse(data)
         else:
+            current_user= request.user
+            if CorrectionWord.objects.filter(user=current_user.id, incorrect_word=correct_word):
+                pass
+            else:
+                incorrect_word = CorrectionWord(user=request.user, incorrect_word=correct_word)
+                incorrect_word.save()
             data = {'msg': 'This incorrect',
                     'not_correct': True}
             return JsonResponse(data)
-    else:
-        return redirect('/')
+    except:
+        return redirect('/quiz/')
 
 
 def home(request):
@@ -146,3 +118,16 @@ def grade(request):
         return redirect('/settings/')
     else:
         return redirect('/settings/')
+
+
+@login_required(login_url='/login/')
+def study(request):
+    current_user=request.user
+    return render(request, 'study.html', {'words': CorrectionWord.objects.filter(user=current_user.id)})
+
+
+def forgot_pasword(request):
+    if request.method == 'POST':
+        email = request.POST['Email']
+    else:
+        return render(request, "forgot_password.html")

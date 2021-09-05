@@ -1,3 +1,4 @@
+
 <title>Spelling</title>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -20,12 +21,29 @@ h1, h2, h3, h4, h5, h6 {
          <a href="/#about" class="w3-bar-item w3-button">About</a>
           <a href="/#advantages" class="w3-bar-item w3-button">Advantages</a>
         <a href="/quiz/" class="w3-bar-item w3-button">Learn</a>
-        <a href="/logout/" class="w3-bar-item w3-button">logout</a>
+           <a href="/study/" class="w3-bar-item w3-button">Study</a>
          <a href="/settings/" class="w3-bar-item w3-button">Settings</a>
+                <a href="/logout/" class="w3-bar-item w3-button">logout</a>
+
 
     </div>
   </div>
 </div>
+<script>
+var isNS = (navigator.appName == "Netscape") ? 1 : 0;
+if(navigator.appName == "Netscape") document.captureEvents(Event.MOUSEDOWN||Event.MOUSEUP);
+function mischandler(){
+return false;
+}
+function mousehandler(e){
+var myevent = (isNS) ? e : event;
+var eventbutton = (isNS) ? myevent.which : myevent.button;
+if((eventbutton==2)||(eventbutton==3)) return false;
+}
+document.oncontextmenu = mischandler;
+document.onmousedown = mousehandler;
+document.onmouseup = mousehandler;
+</script>
 
 
         <div class="w3-row w3-padding-64" id="about">
@@ -48,8 +66,7 @@ h1, h2, h3, h4, h5, h6 {
          <button class="w3-btn w3-ripple w3-blue">Submit</button>
 
       </form>
-  <source src="Correct-answer.mp3" type="audio/mpeg">
-  <source src="Correct-answer.mp3" type="audio/mpeg">
+
 
 
       <div id="output" style="color:green">
@@ -81,7 +98,7 @@ h1, h2, h3, h4, h5, h6 {
                      document.getElementById("view_answer").disabled = false;
                 }
                 if (data.not_correct)  {
-                document.getElementById("output").style.color = "red";
+                    document.getElementById("output").style.color = "red";
                     $('#output').html(data.msg);
                     document.getElementById("view_answer").disabled = false;
 
