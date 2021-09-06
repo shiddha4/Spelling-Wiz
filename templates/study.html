@@ -1,6 +1,33 @@
 
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+div {
+  margin-bottom: 15px;
+  padding: 4px 12px;
+}
 
+.danger {
+  background-color: #ffdddd;
+  border-left: 6px solid #f44336;
+}
+
+.success {
+  background-color: #ddffdd;
+  border-left: 6px solid #04AA6D;
+}
+
+.info {
+  background-color: #e7f3fe;
+  border-left: 6px solid #2196F3;
+}
+
+
+.warning {
+  background-color: #ffffcc;
+  border-left: 6px solid #ffeb3b;
+}
+</style>
 <div class="w3-top">
   <div class="w3-bar w3-green w3-padding w3-card" style="letter-spacing:4px;">
     <a href="/" class="w3-bar-item w3-button">Spelling Wiz</a>
@@ -19,9 +46,13 @@
 </div>
 
 <div class="w3-row w3-padding-64" id="about">
+<h1>Study these words</h1>
     <div class="w3-center">
 {%for word in words%}
-<li>{{word.incorrect_word}}</li>
-{%endfor%}
+ <div class="info">
+  <p><strong>{{word.incorrect_word}}</strong></p>
+</div>
+        {%endfor%}
 
         </div>
+

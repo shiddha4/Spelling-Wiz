@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 import random
 # Create your views here.
 from django.http import JsonResponse
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Extrainfo, CorrectionWord
 import random
@@ -11,7 +10,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-
+#gets random word - input : grade, output:word matching grade
 def random_word(grade):
     if int(grade) < 10:
         word_list = []
@@ -34,7 +33,7 @@ def correct(request):
                     "correct": True}
             return JsonResponse(data)
         else:
-            current_user= request.user
+            current_user = request.user
             if CorrectionWord.objects.filter(user=current_user.id, incorrect_word=correct_word):
                 pass
             else:
@@ -70,6 +69,9 @@ def verify(request):
             return redirect('/create/')
         if User.objects.filter(username=username).exists():
             messages.error(request,'Username already exists')
+            return redirect('/create/')
+        if User.objects.filter(email=email).exists():
+            messages.error(request, 'Email taken')
             return redirect('/create/')
         user = User.objects.create_user(username=username, password=password_1, first_name=first_name, last_name=last_name, email=email)
         user.save()
@@ -122,12 +124,7 @@ def grade(request):
 
 @login_required(login_url='/login/')
 def study(request):
-    current_user=request.user
+    current_user = request.user
     return render(request, 'study.html', {'words': CorrectionWord.objects.filter(user=current_user.id)})
 
 
-def forgot_pasword(request):
-    if request.method == 'POST':
-        email = request.POST['Email']
-    else:
-        return render(request, "forgot_password.html")
