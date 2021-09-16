@@ -20,8 +20,11 @@ def random_word(grade):
             for letter in word:
                 if grade in letter:
                     word_list.append(word.replace(f',{con_grade_level}', ''))
-        word=random.choice(word_list).strip()
+        word =  random.choice(word_list).strip()
         return word
+    else:
+        text_name = f"words/{grade}.txt"
+        return random.choice(open(text_name).read().split()).strip()
 
 
 def correct(request):
@@ -39,7 +42,7 @@ def correct(request):
             else:
                 incorrect_word = CorrectionWord(user=request.user, incorrect_word=correct_word)
                 incorrect_word.save()
-            data = {'msg': 'This incorrect',
+            data = {'msg': 'This is incorrect',
                     'not_correct': True}
             return JsonResponse(data)
     except:
@@ -128,3 +131,11 @@ def study(request):
     return render(request, 'study.html', {'words': CorrectionWord.objects.filter(user=current_user.id)})
 
 
+@login_required(login_url='/login/')
+def delete(request, word_id):
+    word_in_db = CorrectionWord.objects.get(id=word_id)
+    if word_in_db.user.id == request.user.id:
+        word_in_db.delete()
+        return redirect('/study/')
+    else:
+        return redirect('/study/')

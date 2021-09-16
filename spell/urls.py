@@ -11,5 +11,6 @@ urlpatterns = [
     path('settings/', views.settings, name='settings'),
     path('update_grade/', views.grade, name="grade"),
     path('study/', views.study, name='study'),
+    path('delete/<int:word_id>', views.delete, name="delete")
 
 ]

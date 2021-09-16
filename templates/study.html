@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -50,7 +51,10 @@ div {
     <div class="w3-center">
 {%for word in words%}
  <div class="info">
+
   <p><strong>{{word.incorrect_word}}</strong></p>
+<button type="button" onclick=window.location.replace('/delete/{{word.id}}');
+ class="btn btn-danger">Studied</button>
 </div>
         {%endfor%}
 
