@@ -6,6 +6,7 @@ exemplify,9
 explicit,9
 exposition,9
 falter,9
+developer,8
 feasible,9
 feign,9
 fluctuate,9

@@ -30,7 +30,7 @@ div {
 }
 </style>
 <div class="w3-top">
-  <div class="w3-bar w3-green w3-padding w3-card" style="letter-spacing:4px;">
+  <div class="w3-bar w3-orange w3-padding w3-card" style="letter-spacing:4px;">
     <a href="/" class="w3-bar-item w3-button">Spelling Wiz</a>
     <!-- Right-sided navbar links. Hide them on small screens -->
     <div class="w3-right w3-hide-small">
@@ -54,7 +54,7 @@ div {
 
   <p><strong>{{word.incorrect_word}}</strong></p>
 <button type="button" onclick=window.location.replace('/delete/{{word.id}}');
- class="btn btn-danger">Studied</button>
+ class="btn btn-success">Studied</button>
 </div>
         {%endfor%}
 
